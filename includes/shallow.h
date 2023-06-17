@@ -41,9 +41,16 @@
 
 typedef struct s_leaf
 {
-	int		x;
-	int		y;
-	int		active;
+	int				x;
+	int				y;
+	int				active;
+	long			prevframe;
+	long			currframe;
+	struct s_leaf	*leaf;
+	struct s_leaf	*leaf0;
+	struct s_leaf	*leaf_line0;
+	struct s_leaf	*next;
+	struct s_leaf	*down;
 
 }			t_leaf;
 
