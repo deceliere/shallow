@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdecelie <rdecelie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/17 17:59:32 by rdecelie         ###   ########.fr       */
+/*   Updated: 2023/06/18 01:07:58 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,36 @@ int	pixel_move(t_meta *meta)
 
 	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
 	my_mlx_pixel_put(meta->img_data, 100, meta->i, WHITE);
+	my_mlx_pixel_put(meta->img_data, 200, meta->i + 20, WHITE);
 	mlx_put_image_to_window(meta->mlx->ptr,
 		meta->mlx->win, meta->img_data->img, 0, 0);
 	mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
 	my_new_mlx_img_data(meta);
 	if (meta->i == 200)
 		meta->i = 0;
+	return (1);
+}
+
+
+int	print_grid(t_meta *meta)
+{
+	// while(meta->leaf)
+	
+	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
+	// printf("print_grid=%i", meta->leaf->x);
+	// my_mlx_pixel_put(meta->img_data, 100, 100, WHITE);
+		// printf("leaf xy=%i %i \n", meta->leaf->next->x, meta->leaf->next->y);
+
+	while(meta->leaf)
+	{
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
+		meta->leaf = meta->leaf->next;
+	}
+	mlx_put_image_to_window(meta->mlx->ptr,
+		meta->mlx->win, meta->img_data->img, 0, 0);
+	// mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
+	// my_new_mlx_img_data(meta);
+	// if (meta->i == 200)
+		// meta->i = 0;
 	return (1);
 }

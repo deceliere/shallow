@@ -8,8 +8,11 @@
 # include <mlx.h>
 
 
-# define HEIGHT 800
-# define WIDTH 600
+# define HEIGHT 1000
+# define WIDTH 1000
+# define ROW 23
+# define COL 23
+
 
 /* COLORS */
 # define WHITE 0xFFFFFF
@@ -96,6 +99,8 @@ int	keypress_esc(t_meta *meta);
 
 /*animation*/
 int	pixel_move(t_meta *meta);
+int	print_grid(t_meta *meta);
+
 
 /*mlx*/
 void	my_mlx_pixel_put(t_img *imgdata, int x, int y, int color);
