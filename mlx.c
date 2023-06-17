@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdecelie <rdecelie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
+/*   Updated: 2023/06/17 17:59:32 by rdecelie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shallow.h"
 
 
@@ -40,47 +52,23 @@ int    mlx_start(t_meta *meta)
 	meta->mlx = mlx_init_struct(WIDTH, HEIGHT);
 	meta->img_data = malloc(sizeof(t_img));
 	if (!meta->img_data)
-		return (free(meta->img_data), NULL);
+		return (free(meta->img_data), 0);
 	my_new_mlx_img_data(meta);
-	// mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
-	// 	mlx_put_image_to_window(meta->mlx->ptr,
-	// 	meta->mlx->win, meta->img_data->img, 0, 0);
-	// mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
-	// my_new_mlx_img_data(meta);
-
 	return (0);
 }
 
 
 int	pixel_move(t_meta *meta)
 {
-	int	i;
+	meta->i++;
 
-	i = 0;
-	while(i < WIDTH)
-	{
-		my_mlx_pixel_put(meta->img_data, i, 100, WHITE);
-		mlx_put_image_to_window(meta->mlx->ptr,
-		meta->mlx->win, meta->img_data->img, 0, 0);
-		usleep(1000);
-		mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
-		my_new_mlx_img_data(meta);
-		i++;
-	}
-	return (0);
-}
-
-int main()
-{
-	t_meta  *meta;
-
-	meta = malloc(sizeof(t_meta));
-
-	mlx_start(meta);
-	// my_mlx_pixel_put(meta->img_data, 100, 100, WHITE);
+	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
+	my_mlx_pixel_put(meta->img_data, 100, meta->i, WHITE);
 	mlx_put_image_to_window(meta->mlx->ptr,
 		meta->mlx->win, meta->img_data->img, 0, 0);
-	pixel_move(meta);
-	mlx_loop(meta->mlx->ptr);
-
+	mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
+	my_new_mlx_img_data(meta);
+	if (meta->i == 200)
+		meta->i = 0;
+	return (1);
 }
