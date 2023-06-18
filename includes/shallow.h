@@ -13,9 +13,10 @@
 # define WIDTH 1000
 # define ROW 23
 # define COL 23
-# define ON_DUR 5
+# define ON_DUR 2
 # define OFF_DUR 50
-# define MIN_OFF_DUR 50
+# define MIN_OFF_DUR 4000
+# define PIXEL_INITAL_STATE 0
 
 
 /* COLORS */
@@ -97,6 +98,7 @@ typedef struct t_meta
 	float		zooming;
 	int			size[2];
 	int			offset[2];
+	long long	frame;
 	// int			click_state; /// tbc
 	// int			scroll_state; /// tbc
 	// int			shift_state; /// tbc
@@ -117,6 +119,9 @@ t_mlx	*mlx_init_struct(int win_size_x, int win_size_y);
 void	my_new_mlx_img_data(t_meta *meta);
 int		mlx_start(t_meta *meta);
 void	random_time(t_meta **meta);
+
+/*utils*/
+void	print_list(t_leaf **leaf);
 
 
 #endif

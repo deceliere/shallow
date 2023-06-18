@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 10:28:46 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 13:36:59 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void	random_time(t_meta **meta)
 	while (new->leaf)
 	{
 		new->leaf->on_time = rand() % ON_DUR + 2;
-		printf("on time=%i\n", new->leaf->on_time);
+		// printf("on time=%i\n", new->leaf->on_time);
 		new->leaf->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
-		printf("off time=%i\n", new->leaf->off_time);
+		// printf("off time=%i\n", new->leaf->off_time);
 		// printf("active=%i\n", new->leaf->active);
 		new->leaf = new->leaf->next;
 	}
@@ -96,44 +96,46 @@ void	random_time(t_meta **meta)
 
 int	print_grid(t_meta *meta)
 {
+	if (meta->frame % 10)
+		srand(time(NULL));
+
 	t_leaf *leaf0;
 	int	color;
 
 	leaf0 = meta->leaf;
-	random_time(&meta);
-
+	
 	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
 
-	printf("leaf actif xy=%i %i  %i\n", meta->leaf->x, meta->leaf->y, meta->leaf->active);
 	
 	while(meta->leaf)
 	{
 
 		// color = random_color;
 		// printf("random color=%i\n", color);
-		if ((meta->leaf->frame - meta->leaf->prevframe_on >= meta->leaf->off_time) && !(meta->leaf->active))
+		if ((meta->frame - meta->leaf->prevframe_on >= meta->leaf->off_time) && !meta->leaf->active)
 		{
-			if (!meta->leaf->next)
-				printf("time off\n");
 			meta->leaf->active = 1;
-			meta->leaf->prevframe_on = meta->leaf->frame;
+			meta->leaf->prevframe_on = meta->frame;
+			meta->leaf->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
+			// printf("leaf x%i y%i is %i\n", meta->leaf->x, meta->leaf->y, meta->leaf->active);
 		}
-		else if ((meta->leaf->frame - meta->leaf->prevframe_on >= meta->leaf->on_time) && (meta->leaf->active))
+		else if ((meta->frame - meta->leaf->prevframe_on >= meta->leaf->on_time) && meta->leaf->active)
 		{
-			if (!meta->leaf->next)
-				printf("time on\n");
 			meta->leaf->active = 0;
-			meta->leaf->prevframe_on = meta->leaf->frame;
+			meta->leaf->on_time = rand() % ON_DUR + 2;
+			meta->leaf->prevframe_on = meta->frame;
+			// printf("leaf x%i y%i is %i\n", meta->leaf->x, meta->leaf->y, meta->leaf->active);
 		}
 		if (meta->leaf->active)
 			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
-		meta->leaf->frame++;
-		meta->leaf->currframe_on = meta->leaf->frame;
-		meta->leaf->currframe_off = meta->leaf->frame;
-		if (!meta->leaf->next)
-			printf("frame=%li\n", meta->leaf->frame);
+		// meta->leaf->currframe_on = meta->leaf->frame;
+		// meta->leaf->currframe_off = meta->leaf->frame;
+		// if (!meta->leaf->next)
+			// printf("frame=%li\n", meta->leaf->frame);
 		meta->leaf = meta->leaf->next;
 	}
+	meta->frame++;
+	// printf("frame=%li\n", meta->frame);
 	meta->leaf = leaf0;
 	mlx_put_image_to_window(meta->mlx->ptr,
 		meta->mlx->win, meta->img_data->img, 0, 0);

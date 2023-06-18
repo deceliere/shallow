@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 10:28:07 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 13:48:21 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ void	add_to_list(t_leaf **head, int x, int y)
 	new = malloc(sizeof(t_leaf));
 	new->x = x;
 	new->y = y;
-	new->active = 0;
+	new->active = PIXEL_INITAL_STATE;
 	new->prevframe_on = 0;
 	new->prevframe_off = 0;
 	new->currframe_on = 0;
 	new->currframe_off = 0;
 	new->frame = 0;
 	new->on_time = ON_DUR;
-	new->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
+	new->off_time = (rand() % (OFF_DUR + MIN_OFF_DUR));
 	new->next = NULL;
 	new->down = NULL;
 	// printf("add to list ok\n");
@@ -44,14 +44,14 @@ void	append_to_list(t_leaf **head, int x, int y)
 
 	new->x = x;
 	new->y = y;
-	new->active = 0;
+	new->active = PIXEL_INITAL_STATE;
 	new->prevframe_on = 0;
 	new->prevframe_off = 0;
 	new->currframe_on = 0;
 	new->currframe_off = 0;
 	new->frame = 0;
 	new->on_time = ON_DUR;
-	new->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
+	new->off_time = (rand() % (OFF_DUR + MIN_OFF_DUR));
 	new->next = NULL;
 	new->down = NULL;
 
@@ -75,7 +75,7 @@ void	print_list(t_leaf **leaf)
 	tmp = *leaf;
 	while(tmp)
 	{
-		printf("list_xy=%i %i\n", tmp->x, tmp->y);
+		printf("list_x=%i \ty=%i \toff_time=%i \tactive=%i\n", tmp->x, tmp->y, tmp->off_time, tmp->active);
 		tmp = tmp->next;
 	}
 }
@@ -143,10 +143,10 @@ int main()
 	t_meta  *meta;
 	t_leaf	*leaf;
 
-	srand(time(NULL));
 	meta = malloc(sizeof(t_meta));
 	meta->i = 0;
 	meta->spacing = 30;
+	meta->frame = 0;
 
 	meta = create_list(meta);
 
