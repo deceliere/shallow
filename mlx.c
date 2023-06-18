@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 15:14:50 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 15:49:53 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,8 @@ int	print_grid(t_meta *meta)
 		}
 		meta->leaf = meta->leaf->next;
 	}
-	draw_circle((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, WHITE, meta);
+	draw_disc((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, BLACK, meta);
+	draw_circle((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, GRAY, meta);
 	meta->frame++;
 	meta->leaf = leaf0;
 	mlx_put_image_to_window(meta->mlx->ptr,

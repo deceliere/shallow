@@ -114,6 +114,7 @@ int		print_grid(t_meta *meta);
 
 /*circle*/
 void 	draw_circle(int x, int y, int r, int color, t_meta *meta);
+void 	draw_disc(int x, int y, int r, int color, t_meta *meta);
 
 
 /*mlx*/
