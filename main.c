@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 14:52:24 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 15:09:04 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ int main()
 	
 	mlx_start(meta);
 	// print_grid(meta);
+	// draw_circle(200, 200, 50, WHITE, meta);
 	mlx_hook(meta->mlx->win, 2, 2, keypress, meta);
 	// mlx_loop_hook(meta->mlx->ptr, pixel_move, meta);
 	mlx_loop_hook(meta->mlx->ptr, print_grid, meta);

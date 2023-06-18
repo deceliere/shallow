@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rdecelie <rdecelie@student.42.fr>          +#+  +:+       +#+         #
+#    By: r <r@student.42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/10 11:52:50 by lsohler           #+#    #+#              #
-#    Updated: 2023/06/17 17:47:37 by rdecelie         ###   ########.fr        #
+#    Updated: 2023/06/18 15:03:27 by r                ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ HEADER_SRCS = shallow.h
 HEADER = $(addprefix $(INCLUDES), $(HEADER_SRCS))
 
 # SOURCES #
-SRCS = main.c mlx.c key.c
+SRCS = main.c mlx.c key.c circle.c
 # GNL_FUNC = 
 # GNL_DIR = gnl/
 # GNL_SRCS = $(addprefix $(GNL_DIR), $(GNL_FUNC))

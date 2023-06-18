@@ -105,12 +105,15 @@ typedef struct t_meta
 }				t_meta;
 
 /*keys*/
-int	keypress(int key, t_meta *meta);
-int	keypress_esc(t_meta *meta);
+int		keypress(int key, t_meta *meta);
+int		keypress_esc(t_meta *meta);
 
 /*animation*/
-int	pixel_move(t_meta *meta);
-int	print_grid(t_meta *meta);
+int		pixel_move(t_meta *meta);
+int		print_grid(t_meta *meta);
+
+/*circle*/
+void 	draw_circle(int x, int y, int r, int color, t_meta *meta);
 
 
 /*mlx*/
