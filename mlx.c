@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 13:36:59 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 14:52:55 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,38 +110,39 @@ int	print_grid(t_meta *meta)
 	while(meta->leaf)
 	{
 
-		// color = random_color;
-		// printf("random color=%i\n", color);
 		if ((meta->frame - meta->leaf->prevframe_on >= meta->leaf->off_time) && !meta->leaf->active)
 		{
 			meta->leaf->active = 1;
 			meta->leaf->prevframe_on = meta->frame;
 			meta->leaf->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
-			// printf("leaf x%i y%i is %i\n", meta->leaf->x, meta->leaf->y, meta->leaf->active);
 		}
 		else if ((meta->frame - meta->leaf->prevframe_on >= meta->leaf->on_time) && meta->leaf->active)
 		{
 			meta->leaf->active = 0;
 			meta->leaf->on_time = rand() % ON_DUR + 2;
 			meta->leaf->prevframe_on = meta->frame;
-			// printf("leaf x%i y%i is %i\n", meta->leaf->x, meta->leaf->y, meta->leaf->active);
 		}
 		if (meta->leaf->active)
+		{
 			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
-		// meta->leaf->currframe_on = meta->leaf->frame;
-		// meta->leaf->currframe_off = meta->leaf->frame;
-		// if (!meta->leaf->next)
-			// printf("frame=%li\n", meta->leaf->frame);
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, WHITE);
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, WHITE);
+		}
+		else
+		{
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, GRAY);
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, GRAY);
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, GRAY);
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, GRAY);
+		}
 		meta->leaf = meta->leaf->next;
 	}
 	meta->frame++;
-	// printf("frame=%li\n", meta->frame);
 	meta->leaf = leaf0;
 	mlx_put_image_to_window(meta->mlx->ptr,
 		meta->mlx->win, meta->img_data->img, 0, 0);
 	mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
 	my_new_mlx_img_data(meta);
-	// if (meta->i == 200)
-		// meta->i = 0;
 	return (1);
 }

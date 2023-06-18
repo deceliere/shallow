@@ -13,7 +13,7 @@
 # define WIDTH 1000
 # define ROW 23
 # define COL 23
-# define ON_DUR 2
+# define ON_DUR 5
 # define OFF_DUR 50
 # define MIN_OFF_DUR 4000
 # define PIXEL_INITAL_STATE 0
@@ -27,7 +27,7 @@
 # define BLUE 0x0044FF
 # define YELLOW 0xFFBC00
 # define BROWN 0x9F6212
-# define GRAY 0xACACAC
+# define GRAY 0x2F2F2F
 
 /*KEYS*/
 # define KEY_LEFT 123

@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 13:48:21 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 14:52:24 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,12 @@ void	space_list(t_meta *meta, t_leaf *leaf)
 	
 	while(leaf)
 	{
-		leaf->x *= meta->spacing;
+		if (leaf->y % 2)
+			leaf->x = leaf->x * meta->spacing + meta->spacing/2;
+		else
+			leaf->x *= meta->spacing;
 		leaf->y *= meta->spacing;
-		// new->x *= meta->spacing;
 		leaf = leaf->next;
-		// printf("meta->spacing=%i\n", meta->spacing);
-		// printf("space_xy=%i %i\n", leaf->x, leaf->y);
 	}
 
 }
