@@ -11,11 +11,11 @@
 
 # define HEIGHT 1000
 # define WIDTH 1000
-# define ROW 23
-# define COL 23
+# define ROW 27
+# define COL 27
 # define ON_DUR 5
-# define OFF_DUR 50
-# define MIN_OFF_DUR 4000
+# define OFF_DUR 800
+# define MIN_OFF_DUR 5000
 # define PIXEL_INITAL_STATE 0
 
 
@@ -85,20 +85,20 @@ typedef struct t_img
 
 typedef struct t_meta
 {
-	t_mlx		*mlx;
-	t_img		*img_data;
-	int			i;
-	t_leaf		*leaf;
-	// t_q_cache	quats;
-	// t_point		*point;
-	// t_quat		rotation_quat;
-	int			spacing;
-	int			moving;
-	int			key;
-	float		zooming;
-	int			size[2];
-	int			offset[2];
-	long long	frame;
+	t_mlx				*mlx;
+	t_img				*img_data;
+	int					i;
+	t_leaf				*leaf;
+	int					spacing;
+	int					on_dur;
+	int					off_dur;
+	int					min_off;
+	int					moving; ///
+	int					key;
+	float				zooming; ///
+	int					size[2]; ///
+	int					offset[2]; ///
+	unsigned long long	frame;
 	// int			click_state; /// tbc
 	// int			scroll_state; /// tbc
 	// int			shift_state; /// tbc
@@ -123,9 +123,14 @@ t_mlx	*mlx_init_struct(int win_size_x, int win_size_y);
 void	my_new_mlx_img_data(t_meta *meta);
 int		mlx_start(t_meta *meta);
 void	random_time(t_meta **meta);
+void	draw_pixel(t_meta *meta, int color);
+
 
 /*utils*/
 void	print_list(t_leaf **leaf);
+
+/*libft*/
+char	*ft_itoa(int n);
 
 
 #endif

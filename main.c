@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 15:09:04 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 17:33:26 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	space_list(t_meta *meta, t_leaf *leaf)
 			leaf->x = leaf->x * meta->spacing + meta->spacing/2;
 		else
 			leaf->x *= meta->spacing;
-		leaf->y *= meta->spacing;
+		leaf->y = meta->spacing * leaf->y;
 		leaf = leaf->next;
 	}
 
@@ -147,6 +147,9 @@ int main()
 	meta->i = 0;
 	meta->spacing = 30;
 	meta->frame = 0;
+	meta->off_dur = OFF_DUR;
+	meta->min_off = MIN_OFF_DUR;
+	meta->on_dur = ON_DUR;
 
 	meta = create_list(meta);
 
@@ -158,6 +161,8 @@ int main()
 	// draw_circle(200, 200, 50, WHITE, meta);
 	mlx_hook(meta->mlx->win, 2, 2, keypress, meta);
 	// mlx_loop_hook(meta->mlx->ptr, pixel_move, meta);
+	// mlx_string_put (meta->mlx->ptr, meta->mlx->win, 22, 22, RED, " hello");
+
 	mlx_loop_hook(meta->mlx->ptr, print_grid, meta);
 	mlx_loop(meta->mlx->ptr);
 	

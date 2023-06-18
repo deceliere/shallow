@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 15:49:53 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 18:10:26 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_mlx	*mlx_init_struct(int win_size_x, int win_size_y)
 	if (!new)
 		return (NULL);
 	new->ptr = mlx_init();
-	new->win = mlx_new_window(new->ptr, win_size_x, win_size_y, "Shallow");
+	new->win = mlx_new_window(new->ptr, win_size_x, win_size_y, "Shallow water");
 	return (new);
 }
 
@@ -84,29 +84,60 @@ void	random_time(t_meta **meta)
 	
 	while (new->leaf)
 	{
-		new->leaf->on_time = rand() % ON_DUR + 2;
+		new->leaf->on_time = rand() % meta[0]->on_dur + 2;
 		// printf("on time=%i\n", new->leaf->on_time);
-		new->leaf->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
+		// printf("off_time=%i\n", new->leaf->on_time);
+		new->leaf->off_time = (rand() % meta[0]->off_dur) + meta[0]->min_off;
+		// printf("off_time=%i\n", new->leaf->off_time);
 		// printf("off time=%i\n", new->leaf->off_time);
 		// printf("active=%i\n", new->leaf->active);
 		new->leaf = new->leaf->next;
 	}
+	// meta[0]->frame += meta[0]->min_off;
 	new->leaf = leaf0;
+}
+
+void	text_display(t_meta *meta)
+{
+	int	first_line_x;
+	int	first_line_y;
+	int	space_x;
+	int	space_y;
+
+	space_x = 160;
+	space_y = 17;
+	first_line_x = 22;
+	first_line_y = 22;
+	
+	
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x, first_line_y, RED, "on dur:");
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x + space_x, first_line_y, RED, ft_itoa(meta->on_dur));
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x, first_line_y + space_y, RED, "off dur:");
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x + space_x, first_line_y + space_y, RED, ft_itoa(meta->off_dur));
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x, first_line_y + 2*space_y, RED, "min off dur:");
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x + space_x, first_line_y + 2*space_y, RED, ft_itoa(meta->min_off));
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x, first_line_y + 3*space_y, RED, "frame:");
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x + space_x, first_line_y + 3*space_y, RED, ft_itoa(meta->frame));
+}
+
+void	draw_pixel(t_meta *meta, int color)
+{
+	my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
+	my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, color);
+	my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
+	my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, color);	
 }
 
 int	print_grid(t_meta *meta)
 {
-	if (meta->frame % 10)
-		srand(time(NULL));
-
 	t_leaf *leaf0;
 	int	color;
 
+	if (meta->frame % 10)
+		srand(time(NULL));
 	leaf0 = meta->leaf;
-	
 	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
-
-	
+	text_display(meta);
 	while(meta->leaf)
 	{
 
@@ -114,37 +145,28 @@ int	print_grid(t_meta *meta)
 		{
 			meta->leaf->active = 1;
 			meta->leaf->prevframe_on = meta->frame;
-			meta->leaf->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
+			meta->leaf->off_time = (rand() % meta->off_dur) + meta->min_off;
 		}
 		else if ((meta->frame - meta->leaf->prevframe_on >= meta->leaf->on_time) && meta->leaf->active)
 		{
 			meta->leaf->active = 0;
-			meta->leaf->on_time = rand() % ON_DUR + 2;
+			meta->leaf->on_time = rand() % meta->on_dur + 2;
 			meta->leaf->prevframe_on = meta->frame;
 		}
 		if (meta->leaf->active)
-		{
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, WHITE);
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, WHITE);
-		}
+			draw_pixel(meta, WHITE);
 		else
-		{
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, GRAY);
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, GRAY);
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, GRAY);
-			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, GRAY);
-		}
+			draw_pixel(meta, GRAY);
 		meta->leaf = meta->leaf->next;
 	}
 	draw_disc((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, BLACK, meta);
 	draw_circle((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, GRAY, meta);
 	meta->frame++;
 	meta->leaf = leaf0;
-	mlx_put_image_to_window(meta->mlx->ptr,
-		meta->mlx->win, meta->img_data->img, 0, 0);
-	mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
-	my_new_mlx_img_data(meta);
+
+	mlx_put_image_to_window(meta->mlx->ptr, meta->mlx->win, meta->img_data->img, 0, 100);
+
+	// mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
+	// my_new_mlx_img_data(meta);
 	return (1);
 }
