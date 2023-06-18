@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 09:09:23 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 10:28:07 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,13 @@ void	add_to_list(t_leaf **head, int x, int y)
 	new->x = x;
 	new->y = y;
 	new->active = 0;
-	new->prevframe = 0;
-	new->currframe = 0;
+	new->prevframe_on = 0;
+	new->prevframe_off = 0;
+	new->currframe_on = 0;
+	new->currframe_off = 0;
+	new->frame = 0;
+	new->on_time = ON_DUR;
+	new->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
 	new->next = NULL;
 	new->down = NULL;
 	// printf("add to list ok\n");
@@ -40,8 +45,13 @@ void	append_to_list(t_leaf **head, int x, int y)
 	new->x = x;
 	new->y = y;
 	new->active = 0;
-	new->prevframe = 0;
-	new->currframe = 0;
+	new->prevframe_on = 0;
+	new->prevframe_off = 0;
+	new->currframe_on = 0;
+	new->currframe_off = 0;
+	new->frame = 0;
+	new->on_time = ON_DUR;
+	new->off_time = (rand() % OFF_DUR) + MIN_OFF_DUR;
 	new->next = NULL;
 	new->down = NULL;
 

@@ -13,6 +13,9 @@
 # define WIDTH 1000
 # define ROW 23
 # define COL 23
+# define ON_DUR 5
+# define OFF_DUR 50
+# define MIN_OFF_DUR 50
 
 
 /* COLORS */
@@ -48,10 +51,13 @@ typedef struct s_leaf
 	int				x;
 	int				y;
 	int				active;
-	long			on_time;
-	long			off_time;
-	long			prevframe;
-	long			currframe;
+	int				on_time;
+	int				off_time;
+	long			frame;
+	long			prevframe_on;
+	long			currframe_on;
+	long			prevframe_off;
+	long			currframe_off;
 	struct s_leaf	*leaf;
 	struct s_leaf	*leaf0;
 	struct s_leaf	*leaf_line0;
@@ -110,7 +116,7 @@ void	my_mlx_pixel_put(t_img *imgdata, int x, int y, int color);
 t_mlx	*mlx_init_struct(int win_size_x, int win_size_y);
 void	my_new_mlx_img_data(t_meta *meta);
 int		mlx_start(t_meta *meta);
-void	random_color(t_meta **meta);
+void	random_time(t_meta **meta);
 
 
 #endif
