@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 01:04:49 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 09:09:23 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	add_to_list(t_leaf **head, int x, int y)
 {
-	t_leaf *new; ///
+	t_leaf *new;
 
 	new = malloc(sizeof(t_leaf));
 	new->x = x;
@@ -24,7 +24,7 @@ void	add_to_list(t_leaf **head, int x, int y)
 	new->currframe = 0;
 	new->next = NULL;
 	new->down = NULL;
-	
+	// printf("add to list ok\n");
 	*head = new;
 }
 
@@ -32,7 +32,9 @@ void	append_to_list(t_leaf **head, int x, int y)
 {
 	t_leaf	*new;
 	t_leaf	*current;
+	int	i;
 
+	i = 0;
 	new = malloc(sizeof(t_leaf));
 
 	new->x = x;
@@ -43,35 +45,18 @@ void	append_to_list(t_leaf **head, int x, int y)
 	new->next = NULL;
 	new->down = NULL;
 
-	if (new == NULL)
-		*head = new;
-	current = &head;
+	// if (*head == NULL)
+		// *head = new;
+	current = *head;
 	while(current->next)
 	{
 		current = current->next;
+		// i++;
+		// printf("append to list ok i=%i\n", i);
 	}
 	current->next = new;
 }
 
-
-
-// t_leaf init_list(int x, int y)
-// {
-// 	t_leaf *t;
-	
-// 	t->leaf = add_to_list(&x, 22, 3);
-// 	t.x = x;
-// 	t.y = y;
-// 	t.active = 0;
-// 	t.prevframe = 0;
-// 	t.currframe = 0;
-// 	t.next = NULL;
-// 	t.down = NULL;
-// 	t.leaf0 = t.leaf;
-// 	t.leaf_line0 = t.leaf;
-
-// 	return (t);
-// }
 
 void	print_list(t_leaf **leaf)
 {
@@ -135,7 +120,7 @@ t_meta *create_list(t_meta *meta)
 		y++;
 	}
 	space_list(meta, head);
-	print_list(&head);
+	// print_list(&head);
 
 	meta->leaf = head;
 	return (meta);
@@ -148,18 +133,23 @@ int main()
 	t_meta  *meta;
 	t_leaf	*leaf;
 
+	srand(time(NULL));
 	meta = malloc(sizeof(t_meta));
 	meta->i = 0;
 	meta->spacing = 30;
+
 	meta = create_list(meta);
 
+	
 
-
+	
 	mlx_start(meta);
-	print_grid(meta);
+	// print_grid(meta);
 	mlx_hook(meta->mlx->win, 2, 2, keypress, meta);
 	// mlx_loop_hook(meta->mlx->ptr, pixel_move, meta);
 	mlx_loop_hook(meta->mlx->ptr, print_grid, meta);
 	mlx_loop(meta->mlx->ptr);
+	
+	
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 01:07:58 by r                ###   ########.fr       */
+/*   Updated: 2023/06/18 09:09:24 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	pixel_move(t_meta *meta)
 	meta->i++;
 
 	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
-	my_mlx_pixel_put(meta->img_data, 100, meta->i, WHITE);
-	my_mlx_pixel_put(meta->img_data, 200, meta->i + 20, WHITE);
+	my_mlx_pixel_put(meta->img_data, 100, meta->i, rand());
+	my_mlx_pixel_put(meta->img_data, 200, meta->i + 20, rand());
 	mlx_put_image_to_window(meta->mlx->ptr,
 		meta->mlx->win, meta->img_data->img, 0, 0);
 	mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
@@ -74,25 +74,47 @@ int	pixel_move(t_meta *meta)
 	return (1);
 }
 
+void	random_color(t_meta **meta)
+{
+	t_meta *new;
+	t_leaf *leaf0;
+
+	new = *meta;
+	leaf0 = meta[0]->leaf;
+	
+	while (new->leaf)
+	{
+		new->leaf->active = rand() % 2;
+		// printf("active=%i\n", new->leaf->active);
+		new->leaf = new->leaf->next;
+	}
+	new->leaf = leaf0;
+
+}
 
 int	print_grid(t_meta *meta)
 {
-	// while(meta->leaf)
-	
+	t_leaf *leaf0;
+	int	color;
+
+	leaf0 = meta->leaf;
+	random_color(&meta);
+
 	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
-	// printf("print_grid=%i", meta->leaf->x);
-	// my_mlx_pixel_put(meta->img_data, 100, 100, WHITE);
-		// printf("leaf xy=%i %i \n", meta->leaf->next->x, meta->leaf->next->y);
 
 	while(meta->leaf)
 	{
-		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
+		// color = random_color;
+		// printf("random color=%i\n", color);
+		if (meta->leaf->active)
+			my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, WHITE);
 		meta->leaf = meta->leaf->next;
 	}
+	meta->leaf = leaf0;
 	mlx_put_image_to_window(meta->mlx->ptr,
 		meta->mlx->win, meta->img_data->img, 0, 0);
-	// mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
-	// my_new_mlx_img_data(meta);
+	mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
+	my_new_mlx_img_data(meta);
 	// if (meta->i == 200)
 		// meta->i = 0;
 	return (1);

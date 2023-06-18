@@ -6,6 +6,7 @@
 # include <string.h>
 # include <math.h>
 # include <mlx.h>
+# include <time.h>
 
 
 # define HEIGHT 1000
@@ -47,6 +48,8 @@ typedef struct s_leaf
 	int				x;
 	int				y;
 	int				active;
+	long			on_time;
+	long			off_time;
 	long			prevframe;
 	long			currframe;
 	struct s_leaf	*leaf;
@@ -107,6 +110,7 @@ void	my_mlx_pixel_put(t_img *imgdata, int x, int y, int color);
 t_mlx	*mlx_init_struct(int win_size_x, int win_size_y);
 void	my_new_mlx_img_data(t_meta *meta);
 int		mlx_start(t_meta *meta);
+void	random_color(t_meta **meta);
 
 
 #endif
