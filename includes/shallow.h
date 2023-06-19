@@ -4,6 +4,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
+# include <limits.h>
 # include <math.h>
 # include <mlx.h>
 # include <time.h>
@@ -17,7 +18,8 @@
 # define OFF_DUR 200
 # define MIN_OFF_DUR 200
 # define PIXEL_INITAL_STATE 0
-# define SOFT_DROP 144
+# define SOFT_DROP 80
+# define DOT_GRAY 48
 
 
 /* COLORS */
@@ -53,6 +55,7 @@ typedef struct s_leaf
 	int				x;
 	int				y;
 	int				active;
+	int				active_high;
 	int				color;
 	int				on_time;
 	int				off_time;

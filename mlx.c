@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/19 09:24:39 by r                ###   ########.fr       */
+/*   Updated: 2023/06/20 00:04:57 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,19 @@ int	pixel_move(t_meta *meta)
 
 void	random_time(t_meta **meta)
 {
-	t_meta *new;
+	t_meta *ptr;
 	t_leaf *leaf0;
 
-	new = *meta;
+	ptr = *meta;
 	leaf0 = meta[0]->leaf;
 	
-	while (new->leaf)
+	while (ptr->leaf)
 	{
-		new->leaf->on_time = rand() % meta[0]->on_dur + 2;
-		// printf("on time=%i\n", new->leaf->on_time);
-		// printf("off_time=%i\n", new->leaf->on_time);
-		new->leaf->off_time = (rand() % meta[0]->off_dur) + meta[0]->min_off;
-		// printf("off_time=%i\n", new->leaf->off_time);
-		// printf("off time=%i\n", new->leaf->off_time);
-		// printf("active=%i\n", new->leaf->active);
-		new->leaf = new->leaf->next;
+		ptr->leaf->on_time = rand() % meta[0]->on_dur + 2;
+		ptr->leaf->off_time = (rand() % meta[0]->off_dur) + meta[0]->min_off;
+		ptr->leaf = ptr->leaf->next;
 	}
-	// meta[0]->frame += meta[0]->min_off;
-	new->leaf = leaf0;
+	ptr->leaf = leaf0;
 }
 
 void	text_display(t_meta *meta)
@@ -127,29 +121,49 @@ int	create_trgb(int t, int r, int g, int b)
 
 void	random_gray(t_meta **meta)
 {
-	t_meta *new;
+	t_meta *ptr;
 	t_leaf *leaf0;
 	int random_intensity;
+	int	random_threshold;
 
-	new = *meta;
+	ptr = *meta;
 	leaf0 = meta[0]->leaf;
-	
-	while (new->leaf)
+	// if ()
+	// ptr->leaf->active_high;
+	while (ptr->leaf)
 	{
-		random_intensity = rand() % SOFT_DROP;
-		new->leaf->color = create_trgb(0, random_intensity, random_intensity, random_intensity);
+		random_threshold = (rand() % 5000);
+		if (random_threshold < 4950)
+		{
+			ptr->leaf->active_high = 0;
+			random_intensity = rand() % (SOFT_DROP + DOT_GRAY);
+			// printf("random_threshold=%i\n", random_threshold);
+			// printf("random_intensity=%i\n", random_intensity);
+			ptr->leaf->color = create_trgb(0, random_intensity, random_intensity, random_intensity);
+		}
+		else
+		{
+			ptr->leaf->active_high = 1;
+			ptr->leaf->color = WHITE;
+		}
 		// printf("random gray=%x\n", new->leaf->color);
-		new->leaf = new->leaf->next;
+		ptr->leaf = ptr->leaf->next;
 	}
-	new->leaf = leaf0;
+	ptr->leaf = leaf0;
 }
 
 void	draw_pixel(t_meta *meta, int color)
 {
-	my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
-	my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, color);
-	my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
-	my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, color);	
+	if (meta->leaf->active_high)
+	{
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, color);
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, color);	
+	}
+	else
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
+	
 }
 
 int	print_grid(t_meta *meta)
@@ -181,7 +195,7 @@ int	print_grid(t_meta *meta)
 		if (meta->leaf->active)
 			draw_pixel(meta, meta->leaf->color);
 		else
-			draw_pixel(meta, GRAY);
+			draw_pixel(meta, create_trgb(0, DOT_GRAY, DOT_GRAY, DOT_GRAY));
 		meta->leaf = meta->leaf->next;
 	}
 	draw_disc((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, BLACK, meta);
@@ -191,7 +205,7 @@ int	print_grid(t_meta *meta)
 
 	mlx_put_image_to_window(meta->mlx->ptr, meta->mlx->win, meta->img_data->img, 0, 100);
 
-	// mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
-	// my_new_mlx_img_data(meta);
+	mlx_destroy_image(meta->mlx->ptr, meta->img_data->img);
+	my_new_mlx_img_data(meta);
 	return (1);
 }

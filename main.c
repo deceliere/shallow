@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/19 09:15:31 by r                ###   ########.fr       */
+/*   Updated: 2023/06/19 23:27:02 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,30 @@ t_meta *create_list(t_meta *meta)
 	return (meta);
 }
 
+// void	random_test(void)
+// {
+// 	int	i;
+// 	int	tot_positive;
+// 	int	rand_i;
 
+// 	i = 0;
+// 	tot_positive = 0;
+// 	while(i < 5000)
+// 	{
+		
+// 		rand_i = rand() % (1000);
+// 		if (rand_i > 990)
+// 		{
+// 			printf("i=%i rand %i= %i\n", i, INT_MAX , rand_i);
+// 			tot_positive++;
+// 		}
+// 		i++;
+// 	}
+// 	printf("tot_positif=%i\n", tot_positive);
+// 	exit(0);
+		
+	
+// }
 
 int main()
 {
@@ -133,8 +156,8 @@ int main()
 	meta = create_list(meta);
 
 	
+	// random_test();
 
-	
 	mlx_start(meta);
 	// print_grid(meta);
 	// draw_circle(200, 200, 50, WHITE, meta);
@@ -144,6 +167,7 @@ int main()
 
 	mlx_loop_hook(meta->mlx->ptr, print_grid, meta);  
 	mlx_loop(meta->mlx->ptr);
+
 	
 	
 	return (0);
