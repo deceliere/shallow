@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 18:10:26 by r                ###   ########.fr       */
+/*   Updated: 2023/06/19 09:24:39 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,30 @@ void	text_display(t_meta *meta)
 	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x + space_x, first_line_y + 3*space_y, RED, ft_itoa(meta->frame));
 }
 
+int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+void	random_gray(t_meta **meta)
+{
+	t_meta *new;
+	t_leaf *leaf0;
+	int random_intensity;
+
+	new = *meta;
+	leaf0 = meta[0]->leaf;
+	
+	while (new->leaf)
+	{
+		random_intensity = rand() % SOFT_DROP;
+		new->leaf->color = create_trgb(0, random_intensity, random_intensity, random_intensity);
+		// printf("random gray=%x\n", new->leaf->color);
+		new->leaf = new->leaf->next;
+	}
+	new->leaf = leaf0;
+}
+
 void	draw_pixel(t_meta *meta, int color)
 {
 	my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
@@ -143,6 +167,7 @@ int	print_grid(t_meta *meta)
 
 		if ((meta->frame - meta->leaf->prevframe_on >= meta->leaf->off_time) && !meta->leaf->active)
 		{
+			random_gray(&meta);
 			meta->leaf->active = 1;
 			meta->leaf->prevframe_on = meta->frame;
 			meta->leaf->off_time = (rand() % meta->off_dur) + meta->min_off;
@@ -154,7 +179,7 @@ int	print_grid(t_meta *meta)
 			meta->leaf->prevframe_on = meta->frame;
 		}
 		if (meta->leaf->active)
-			draw_pixel(meta, WHITE);
+			draw_pixel(meta, meta->leaf->color);
 		else
 			draw_pixel(meta, GRAY);
 		meta->leaf = meta->leaf->next;

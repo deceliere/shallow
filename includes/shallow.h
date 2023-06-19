@@ -14,9 +14,10 @@
 # define ROW 27
 # define COL 27
 # define ON_DUR 5
-# define OFF_DUR 800
-# define MIN_OFF_DUR 5000
+# define OFF_DUR 200
+# define MIN_OFF_DUR 200
 # define PIXEL_INITAL_STATE 0
+# define SOFT_DROP 144
 
 
 /* COLORS */
@@ -27,7 +28,7 @@
 # define BLUE 0x0044FF
 # define YELLOW 0xFFBC00
 # define BROWN 0x9F6212
-# define GRAY 0x2F2F2F
+# define GRAY 0x1F1F1F
 
 /*KEYS*/
 # define KEY_LEFT 123
@@ -52,13 +53,11 @@ typedef struct s_leaf
 	int				x;
 	int				y;
 	int				active;
+	int				color;
 	int				on_time;
 	int				off_time;
-	long			frame;
+	// long			frame;
 	long			prevframe_on;
-	long			currframe_on;
-	long			prevframe_off;
-	long			currframe_off;
 	struct s_leaf	*leaf;
 	struct s_leaf	*leaf0;
 	struct s_leaf	*leaf_line0;
@@ -124,6 +123,7 @@ void	my_new_mlx_img_data(t_meta *meta);
 int		mlx_start(t_meta *meta);
 void	random_time(t_meta **meta);
 void	draw_pixel(t_meta *meta, int color);
+int		create_trgb(int t, int r, int g, int b);
 
 
 /*utils*/

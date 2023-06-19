@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:47:21 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/18 17:33:26 by r                ###   ########.fr       */
+/*   Updated: 2023/06/19 09:15:31 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,10 @@ void	add_to_list(t_leaf **head, int x, int y)
 	new->y = y;
 	new->active = PIXEL_INITAL_STATE;
 	new->prevframe_on = 0;
-	new->prevframe_off = 0;
-	new->currframe_on = 0;
-	new->currframe_off = 0;
-	new->frame = 0;
 	new->on_time = ON_DUR;
 	new->off_time = (rand() % (OFF_DUR + MIN_OFF_DUR));
 	new->next = NULL;
 	new->down = NULL;
-	// printf("add to list ok\n");
 	*head = new;
 }
 
@@ -46,17 +41,11 @@ void	append_to_list(t_leaf **head, int x, int y)
 	new->y = y;
 	new->active = PIXEL_INITAL_STATE;
 	new->prevframe_on = 0;
-	new->prevframe_off = 0;
-	new->currframe_on = 0;
-	new->currframe_off = 0;
-	new->frame = 0;
 	new->on_time = ON_DUR;
 	new->off_time = (rand() % (OFF_DUR + MIN_OFF_DUR));
 	new->next = NULL;
 	new->down = NULL;
 
-	// if (*head == NULL)
-		// *head = new;
 	current = *head;
 	while(current->next)
 	{
@@ -106,16 +95,6 @@ t_meta *create_list(t_meta *meta)
 	int	x;
 	int	y;
 
-	// i = 0;
-	// x = 0;
-	// y = 0;
-	// while (x < 10)
-	// {
-	// 	tab[x] = x;
-	// 	x++;
-	// }
-
-
 	x = 1;
 	y = 1;
 	add_to_list(&head, x++, y);
@@ -163,7 +142,7 @@ int main()
 	// mlx_loop_hook(meta->mlx->ptr, pixel_move, meta);
 	// mlx_string_put (meta->mlx->ptr, meta->mlx->win, 22, 22, RED, " hello");
 
-	mlx_loop_hook(meta->mlx->ptr, print_grid, meta);
+	mlx_loop_hook(meta->mlx->ptr, print_grid, meta);  
 	mlx_loop(meta->mlx->ptr);
 	
 	
