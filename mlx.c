@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/20 18:59:32 by r                ###   ########.fr       */
+/*   Updated: 2023/06/20 19:09:08 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,8 @@ void	draw_pixel(t_meta *meta, int color)
 	if (meta->leaf->active_high)
 	{
 		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, color);
 		my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, color);
-		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
 		my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y + 1, color);	
 	}
 	else
