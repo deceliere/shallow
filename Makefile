@@ -6,7 +6,7 @@
 #    By: r <r@student.42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/10 11:52:50 by lsohler           #+#    #+#              #
-#    Updated: 2023/06/19 11:24:03 by r                ###   ########.fr        #
+#    Updated: 2023/06/20 09:46:21 by r                ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,11 @@ NAME = shallow
 
 # HEADER #
 INCLUDES = includes/
-HEADER_SRCS = shallow.h
+HEADER_SRCS = shallow.h mtwister/mtwister.h
 HEADER = $(addprefix $(INCLUDES), $(HEADER_SRCS))
 
 # SOURCES #
-SRCS = main.c mlx.c key.c circle.c ft_itoa.c
+SRCS = main.c mlx.c key.c circle.c ft_itoa.c mtwister/mtwister.c
 # GNL_FUNC = 
 # GNL_DIR = gnl/
 # GNL_SRCS = $(addprefix $(GNL_DIR), $(GNL_FUNC))

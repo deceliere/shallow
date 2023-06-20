@@ -6,7 +6,7 @@
 /*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:35:07 by rdecelie          #+#    #+#             */
-/*   Updated: 2023/06/20 00:04:57 by r                ###   ########.fr       */
+/*   Updated: 2023/06/20 18:59:32 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void	text_display(t_meta *meta)
 	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x + space_x, first_line_y + 2*space_y, RED, ft_itoa(meta->min_off));
 	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x, first_line_y + 3*space_y, RED, "frame:");
 	mlx_string_put (meta->mlx->ptr, meta->mlx->win, first_line_x + space_x, first_line_y + 3*space_y, RED, ft_itoa(meta->frame));
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, 13 * first_line_x, first_line_y, RED, "total active:");
+	mlx_string_put (meta->mlx->ptr, meta->mlx->win, 13 * first_line_x + space_x, first_line_y, RED, ft_itoa(meta->total_active));
 }
 
 int	create_trgb(int t, int r, int g, int b)
@@ -119,37 +121,46 @@ int	create_trgb(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-void	random_gray(t_meta **meta)
+
+int	random_limit(int nbr)
 {
-	t_meta *ptr;
-	t_leaf *leaf0;
+	int	i;
+	
+	i = rand() % (nbr);
+	return (i);
+}
+
+void	random_gray(t_leaf **leaf)
+{
+	// t_leaf *ptr;
+	// t_leaf *leaf0;
 	int random_intensity;
 	int	random_threshold;
 
-	ptr = *meta;
-	leaf0 = meta[0]->leaf;
-	// if ()
-	// ptr->leaf->active_high;
-	while (ptr->leaf)
-	{
-		random_threshold = (rand() % 5000);
+	// ptr = *meta;
+	// leaf0 = meta[0]->leaf;
+	// while (ptr->leaf)
+	// {
+		// random_threshold = rand() % 5000;
+		random_threshold = mtwister(5000);
+		// printf("leaf xy %i %i random_threshold=%i\n", leaf[0]->x, leaf[0]->y, random_threshold);
 		if (random_threshold < 4950)
 		{
-			ptr->leaf->active_high = 0;
-			random_intensity = rand() % (SOFT_DROP + DOT_GRAY);
-			// printf("random_threshold=%i\n", random_threshold);
+			leaf[0]->active_high = 0;
+			// random_intensity = rand() % (SOFT_DROP + DOT_GRAY);
+			random_intensity = mtwister(SOFT_DROP + DOT_GRAY);
 			// printf("random_intensity=%i\n", random_intensity);
-			ptr->leaf->color = create_trgb(0, random_intensity, random_intensity, random_intensity);
+			leaf[0]->color = create_trgb(0, random_intensity, random_intensity, random_intensity);
 		}
 		else
 		{
-			ptr->leaf->active_high = 1;
-			ptr->leaf->color = WHITE;
+			leaf[0]->active_high = 1;
+			leaf[0]->color = WHITE;
 		}
 		// printf("random gray=%x\n", new->leaf->color);
-		ptr->leaf = ptr->leaf->next;
-	}
-	ptr->leaf = leaf0;
+		// ptr->leaf = ptr->leaf->next;
+	// }
+	// ptr->leaf = leaf0;
 }
 
 void	draw_pixel(t_meta *meta, int color)
@@ -159,7 +170,7 @@ void	draw_pixel(t_meta *meta, int color)
 		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
 		my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y, color);
 		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
-		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y + 1, color);	
+		my_mlx_pixel_put(meta->img_data, meta->leaf->x + 1, meta->leaf->y + 1, color);	
 	}
 	else
 		my_mlx_pixel_put(meta->img_data, meta->leaf->x, meta->leaf->y, color);
@@ -176,12 +187,12 @@ int	print_grid(t_meta *meta)
 	leaf0 = meta->leaf;
 	mlx_clear_window(meta->mlx->ptr, meta->mlx->win);
 	text_display(meta);
+	meta->total_active = 0;
 	while(meta->leaf)
 	{
-
 		if ((meta->frame - meta->leaf->prevframe_on >= meta->leaf->off_time) && !meta->leaf->active)
 		{
-			random_gray(&meta);
+			random_gray(&meta->leaf);
 			meta->leaf->active = 1;
 			meta->leaf->prevframe_on = meta->frame;
 			meta->leaf->off_time = (rand() % meta->off_dur) + meta->min_off;
@@ -195,11 +206,17 @@ int	print_grid(t_meta *meta)
 		if (meta->leaf->active)
 			draw_pixel(meta, meta->leaf->color);
 		else
+		{
+			meta->leaf->active_high = 0;	
 			draw_pixel(meta, create_trgb(0, DOT_GRAY, DOT_GRAY, DOT_GRAY));
+		}
+		if (meta->leaf->active)
+			meta->total_active++;
 		meta->leaf = meta->leaf->next;
 	}
 	draw_disc((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, BLACK, meta);
 	draw_circle((ROW / 2) * meta->spacing + ROW, (COL / 2) * meta->spacing + COL, (ROW / 2) * meta->spacing + ROW / 2, GRAY, meta);
+	// printf("total_active=\t%i\n", meta->total_active);
 	meta->frame++;
 	meta->leaf = leaf0;
 

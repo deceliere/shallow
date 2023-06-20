@@ -8,6 +8,7 @@
 # include <math.h>
 # include <mlx.h>
 # include <time.h>
+# include "../mtwister/mtwister.h"
 
 
 # define HEIGHT 1000
@@ -19,7 +20,7 @@
 # define MIN_OFF_DUR 200
 # define PIXEL_INITAL_STATE 0
 # define SOFT_DROP 80
-# define DOT_GRAY 48
+# define DOT_GRAY 40
 
 
 /* COLORS */
@@ -90,6 +91,7 @@ typedef struct t_meta
 	t_mlx				*mlx;
 	t_img				*img_data;
 	int					i;
+	int					total_active;
 	t_leaf				*leaf;
 	int					spacing;
 	int					on_dur;
@@ -134,6 +136,10 @@ void	print_list(t_leaf **leaf);
 
 /*libft*/
 char	*ft_itoa(int n);
+
+/*random*/
+int	random_limit(int nbr);
+int mtwister(int mod);
 
 
 #endif
